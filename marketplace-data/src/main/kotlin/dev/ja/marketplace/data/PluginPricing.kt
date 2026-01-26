@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 Joachim Ansorg.
+ * Copyright (c) 2024-2026 Joachim Ansorg.
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
@@ -15,6 +15,7 @@ import dev.ja.marketplace.client.model.CustomerType
 import dev.ja.marketplace.client.model.LicensePeriod
 import dev.ja.marketplace.client.model.PluginPriceInfo
 import dev.ja.marketplace.services.Countries
+import dev.ja.marketplace.services.Country
 import dev.ja.marketplace.services.CountryIsoCode
 import org.javamoney.moneta.FastMoney
 import org.javamoney.moneta.Money
@@ -50,7 +51,27 @@ data class PluginPricing(
         licensePeriod: LicensePeriod,
         continuityDiscount: ContinuityDiscount,
     ): MonetaryAmount? {
-        return basePriceCache.get(PricingCacheKey(customerInfo.country, customerInfo.type, licensePeriod, continuityDiscount)) { key ->
+        val country = customerInfo.country
+        val basePrice = getBasePriceByCountry(country, customerInfo.type, licensePeriod, continuityDiscount)
+        if (basePrice != null) {
+            return basePrice
+        }
+
+        // Attempt to fall back to US base price for currency USD. JetBrains' data is missing the country sometimes.
+        if (country.isEmpty()) {
+            return getBasePriceByCountry(Country.UNITED_STATES, customerInfo.type, licensePeriod, continuityDiscount)
+        }
+
+        return null
+    }
+
+    private suspend fun getBasePriceByCountry(
+        country: String,
+        customerType: CustomerType,
+        licensePeriod: LicensePeriod,
+        continuityDiscount: ContinuityDiscount
+    ): MonetaryAmount? {
+        return basePriceCache.get(PricingCacheKey(country, customerType, licensePeriod, continuityDiscount)) { key ->
             getBasePriceInner(key.country, key.customerType, key.licensePeriod, key.continuityDiscount) ?: NoBasePriceValue
         }.takeIf { it !== NoBasePriceValue }
     }

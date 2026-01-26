@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 Joachim Ansorg.
+ * Copyright (c) 2024-2026 Joachim Ansorg.
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
@@ -51,7 +51,7 @@ abstract class RecurringRevenueTracker(
                 nextContinuityDiscount(license)
             )
             assert(basePrice != null) {
-                "Unable to find base price for country ${license.sale.customer.country}"
+                "Unable to find base price for '${license.sale}'"
             }
 
             val factors = basePriceFactor(license.sale.licensePeriod) * otherDiscountsFactor(license).toBigDecimal()
