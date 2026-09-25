@@ -5,37 +5,38 @@
 @param plugins: List<PluginInfoSummary>
 @param urls: MarketplaceUrlSupport
 
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Choose a Plugin</title>
-    <link rel="stylesheet" type="text/css" href="/styles/main.css"/>
-    <link rel="stylesheet" type="text/css" media="print" href="/styles/main.css"/>
-</head>
+@template.head(title = "Choose a Plugin")
 <body>
+@template.themeToggle(cssClass = "theme-toggle-floating")
 
 <h1>Available Plugins</h1>
-<p>Please choose one of the available plugins.</p>
-<br>
+<p class="subtitle">Choose a plugin to see its report.</p>
 
 <h2>Paid or Freemium Plugins</h2>
-<ul>
+<ul class="plugin-list">
     @for(plugin in plugins.filter { it.isPaidOrFreemium })
         <li>
             !{val iconUrl = plugin.iconUrlPath?.let { urls.assetUrl(it) }}
-            @if(iconUrl != null)<img src="${iconUrl}" alt="logo" class="plugin-icon-small"/>@endif
-            <a href="/?pluginId=${plugin.id}">${plugin.name}</a>
+            <a href="/?pluginId=${plugin.id}">
+                @if(iconUrl != null)<img src="${iconUrl}" alt="" class="plugin-icon-small"/>@endif
+                ${plugin.name}
+            </a>
         </li>
     @endfor
 </ul>
 
 <h2>Free Plugins</h2>
-<p>There's only limited data provided for free plugins.</p>
-<ul>
+<p class="desc">Free plugins have limited data available.</p>
+<ul class="plugin-list">
     @for(plugin in plugins.filter { !it.isPaidOrFreemium })
         <li>
             !{val iconUrl = plugin.iconUrlPath?.let { urls.assetUrl(it) }}
-            @if(iconUrl != null)<img src="${iconUrl}" alt="logo" class="plugin-icon-small"/>@endif
-            <a href="/?pluginId=${plugin.id}">${plugin.name}</a>
+            <a href="/?pluginId=${plugin.id}">
+                @if(iconUrl != null)<img src="${iconUrl}" alt="" class="plugin-icon-small"/>@endif
+                ${plugin.name}
+            </a>
         </li>
     @endfor
 </ul>

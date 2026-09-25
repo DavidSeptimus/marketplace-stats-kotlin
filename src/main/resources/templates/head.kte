@@ -1,0 +1,21 @@
+@param title: String
+@param sortable: Boolean = false
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>${title}</title>
+    <script>
+        try {
+            const theme = localStorage.getItem("theme");
+            if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch (e) {
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="/styles/main.css"/>
+    <link rel="stylesheet" type="text/css" media="print" href="/styles/print.css"/>
+    @if(sortable)
+        <link href="/js/sortable.css" rel="stylesheet"/>
+        <script src="/js/sortable.min.js"></script>
+    @endif
+</head>

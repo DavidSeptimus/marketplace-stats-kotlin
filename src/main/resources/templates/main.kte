@@ -18,34 +18,29 @@
 @param urls: MarketplaceUrlSupport
 @param settings: ServerConfiguration
 
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>${plugin.name}: ${pageTitle ?: "Report"}</title>
-    <link rel="stylesheet" type="text/css" href="/styles/main.css"/>
-    <link rel="stylesheet" type="text/css" media="print" href="/styles/main.css"/>
-    <link href="/js/sortable.css" rel="stylesheet"/>
-    <script src="/js/sortable.min.js"></script>
-</head>
+@template.head(title = plugin.name + ": " + (pageTitle ?: "Report"), sortable = true)
 <body class="${cssClass}">
 !{val iconUrl = plugin.iconUrlPath?.let { urls.assetUrl(it) }}
-@if(iconUrl != null)
-    <div class="centered">
-        <img src="${iconUrl}" alt="logo" class="plugin-icon"/>
+<header class="page-header ${if (pageTitle != null) "page-header-compact" else null}">
+    @if(iconUrl != null)
+        <img src="${iconUrl}" alt="" class="plugin-icon"/>
+    @endif
+    <div class="page-header-text">
+        <h1>${plugin.name}</h1>
+        <div class="page-meta">
+            <span class="chip">@template.render(today)</span>
+            <span class="chip">↓ <strong>@template.render(plugin.downloads.toBigInteger())</strong> downloads</span>
+            <span class="chip" title="${rating.votesCount} ratings">★ <strong>@template.render(rating.calculatedRatingValue)</strong></span>
+        </div>
     </div>
-@endif
-<h1>${plugin.name}</h1>
-<div class="subtitle">
-    @template.render(today)
-    <br>
-    <br>
-    <span>↓ @template.render(plugin.downloads.toBigInteger()) downloads</span><br>
-    <span title="${rating.votesCount} ratings">★ @template.render(rating.calculatedRatingValue)</span>
-</div>
+</header>
 
 @template.navbar(plugin = plugin, showResellerCharges = settings.showResellerCharges)
 
 @if(pageTitle != null)
-    <h2 class="centered">${pageTitle}</h2>
+    <h2 class="page-title">${pageTitle}</h2>
 @endif
 
 @if(pageDescription != null)
@@ -58,8 +53,8 @@
     @endfor
 </section>
 
-<footer class="menu subtitle section-small">
-    <form action="/refresh?pluginId=${plugin.id}&reload=true" method="POST"><button>Refresh</button></form>
+<footer class="page-footer noprint">
+    <form action="/refresh?pluginId=${plugin.id}&reload=true" method="POST"><button>Refresh data</button></form>
 </footer>
 
 </body>

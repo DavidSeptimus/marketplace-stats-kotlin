@@ -3,20 +3,28 @@
 @param plugin: PluginInfo
 @param showResellerCharges: Boolean
 
-<div class="subtitle menu small">
-    <a href="/?pluginId=${plugin.id}">Overview</a>
-    @if(plugin.isPaidOrFreemium)
-        <a href="/licenses?pluginId=${plugin.id}&rows=1000">Licenses</a>
-        <a href="/customers/active?pluginId=${plugin.id}">Customers (active)</a>
-        <a href="/customers/churned?pluginId=${plugin.id}">Customers (churned)</a>
-        <a href="/customers?pluginId=${plugin.id}">Customers (all)</a>
-        <a href="/countries?pluginId=${plugin.id}">Countries</a>
-        <a href="/trials?pluginId=${plugin.id}&rows=100">Trials</a>
-        <a href="/trials/funnel?pluginId=${plugin.id}">Trials (Funnel)</a>
-        <a href="/resellers?pluginId=${plugin.id}">Resellers</a>
-        <a href="/pricing?pluginId=${plugin.id}">Pricing</a>
-        @if(showResellerCharges)
-        <a href="/charges?pluginId=${plugin.id}">Charges</a>
+<nav class="navbar menu">
+    <div class="nav-links">
+        <a href="/?pluginId=${plugin.id}">Overview</a>
+        @if(plugin.isPaidOrFreemium)
+            <a href="/licenses?pluginId=${plugin.id}&rows=1000">Licenses</a>
+            <a href="/customers/active?pluginId=${plugin.id}">Customers (active)</a>
+            <a href="/customers/churned?pluginId=${plugin.id}">Customers (churned)</a>
+            <a href="/customers?pluginId=${plugin.id}">Customers (all)</a>
+            <a href="/countries?pluginId=${plugin.id}">Countries</a>
+            <a href="/trials?pluginId=${plugin.id}&rows=100">Trials</a>
+            <a href="/trials/funnel?pluginId=${plugin.id}">Trials (Funnel)</a>
+            <a href="/resellers?pluginId=${plugin.id}">Resellers</a>
+            <a href="/pricing?pluginId=${plugin.id}">Pricing</a>
+            @if(showResellerCharges)
+            <a href="/charges?pluginId=${plugin.id}">Charges</a>
+            @endif
         @endif
-    @endif
-</div>
+    </div>
+    @template.themeToggle()
+    <script>
+        for (const link of document.currentScript.parentElement.querySelectorAll(".nav-links a")) {
+            if (link.pathname === location.pathname) link.setAttribute("aria-current", "page");
+        }
+    </script>
+</nav>
