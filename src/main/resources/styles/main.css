@@ -30,6 +30,8 @@
     --row-hover-bg: rgba(30, 31, 34, 0.04);
     --current-bg: rgba(47, 100, 214, 0.14);
     --current-link: #0e50c2;
+    --current-positive: #176a2e;
+    --current-negative: #b81e29;
     --badge-new-bg: #fde8c8;
     --badge-new-text: #6b3e00;
     --sun-display: none;
@@ -70,6 +72,8 @@
         --row-hover-bg: rgba(255, 255, 255, 0.05);
         --current-bg: rgba(110, 160, 255, 0.26);
         --current-link: #b3caff;
+        --current-positive: #8adb95;
+        --current-negative: #ffabab;
         --badge-new-bg: #5a4526;
         --badge-new-text: #ffdcaa;
         --sun-display: block;
@@ -100,6 +104,8 @@
         --row-hover-bg: rgba(255, 255, 255, 0.05);
         --current-bg: rgba(110, 160, 255, 0.26);
         --current-link: #b3caff;
+        --current-positive: #8adb95;
+        --current-negative: #ffabab;
         --badge-new-bg: #5a4526;
         --badge-new-text: #ffdcaa;
         --sun-display: block;
@@ -662,6 +668,14 @@ tr.today > :first-child {
 
 tr.today a, tr.today a:visited {
     color: var(--current-link);
+}
+
+tr.today .num-plus {
+    color: var(--current-positive);
+}
+
+tr.today .num-minus, tr.today .red {
+    color: var(--current-negative);
 }
 
 .future, .churned {
